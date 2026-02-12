@@ -61,6 +61,8 @@ def fetch_historical_prices(pair_id, start, end):
     df_stock = go.get_historical_prices(pair_id, start, end).price
     df_stock.index = pd.to_datetime(df_stock.index, format='%d%m%Y')
     
+    # Special data cleaning for pair_ID 45429 (specific ETF with known data quality issues)
+    # Apply more aggressive outlier detection using multiple statistical methods
     if pair_id == 45429:
         # Store original values for comparison
         original_values = df_stock.copy()
@@ -101,6 +103,8 @@ def load_datas(selected_isins, additional_info_df, adjust_for_dividends=True):
         if selected:
             pair_id, stock_name = selected["pair_ID"], selected["search_main_longtext"]
             
+            # Special handling for KMLM (pair_ID 1196641)
+            # This ETF requires combining scraped data with CSV historical returns
             if pair_id == 1196641:  # KMLM
                 # Download data within the date range
                 df_stock = fetch_historical_prices(1196641, start, end)
@@ -111,7 +115,9 @@ def load_datas(selected_isins, additional_info_df, adjust_for_dividends=True):
                 initial_price = df_stock.iloc[0, 0]
                 
                 # Load CSV data and convert daily returns to prices
-                daily_data = pd.read_csv("KMLM.csv", parse_dates=['Date'])
+                # KMLM data file contains historical daily returns for this specific ETF
+                csv_path = os.path.join(os.path.dirname(__file__), "KMLM.csv")
+                daily_data = pd.read_csv(csv_path, parse_dates=['Date'])
                 daily_prices_df = convert_daily_returns_to_prices(daily_data, initial_price)
                 
                 # Merge Yahoo Finance data and CSV data
@@ -131,6 +137,7 @@ def load_datas(selected_isins, additional_info_df, adjust_for_dividends=True):
                 combined_df = combined_df.loc[~combined_df.index.duplicated(keep='first')]
                 df_stock = combined_df
                 
+            # TFLO (pair_ID 1191927) uses alternative data source (pair_ID 959362)
             elif pair_id == 1191927:  # TFLO
                 df_stock = fetch_historical_prices(959362, start, end)
             else:
@@ -264,6 +271,7 @@ def generate_xray_report(selected_isins, investment_strategy, weight_list, sri_v
         portfolio_metrics.columns = [""] + portfolio_metrics.columns[1:].tolist()
         portfolio_metrics['Yield'] = "{:.2f}%".format(weighted_dividends)
 
+        # Default benchmark: MSCI World Index (pair_ID 38156)
         if benchmark_id is None:
             benchmark_id = "38156"
 
@@ -311,18 +319,31 @@ def generate_xray_report(selected_isins, investment_strategy, weight_list, sri_v
                 'Sector': combined_sectors,
                 'Top Holdings': combined_holdings[0],
             }
-        
-        pdf_path = "portfolio_report.pdf"
+
+        # Generate PDF in project root directory
+        pdf_path = os.path.join(os.path.dirname(__file__), "portfolio_report.pdf")
         create_pdf(combined_metrics_df, combined_portfolio, portfolio_metrics, investment_strategy, sri_value, combined_bench, additional_data, benchmark)
         st.download_button(label="Download X-Ray PDF", data=open(pdf_path, "rb"), file_name="portfolio_report.pdf")
         pdf_viewer(pdf_path)
 
 # Functions to save and load portfolios
-def save_portfolio_to_file(portfolios, filename="/files/portfolios.json"):
-    with open(filename, "w") as file:
-        json.dump(portfolios, file)
+def save_portfolio_to_file(portfolios, filename=None):
+    if filename is None:
+        # Use cross-platform path in project files directory
+        base_dir = os.path.dirname(__file__)
+        files_dir = os.path.join(base_dir, "files")
+        os.makedirs(files_dir, exist_ok=True)
+        filename = os.path.join(files_dir, "portfolios.json")
 
-def load_portfolios_from_file(filename="/files/portfolios.json"):
+    with open(filename, "w") as file:
+        json.dump(portfolios, file, indent=2)
+
+def load_portfolios_from_file(filename=None):
+    if filename is None:
+        # Use cross-platform path in project files directory
+        base_dir = os.path.dirname(__file__)
+        filename = os.path.join(base_dir, "files", "portfolios.json")
+
     if os.path.exists(filename):
         with open(filename, "r") as file:
             return json.load(file)
@@ -413,9 +434,9 @@ def main():
             try:
                 optimize_and_display(st.session_state.get('selected_isins', []), st.session_state.get('weight_list', []))
             except (ValueError, IndexError, KeyError) as e:
-                st.error('Select at least 2 holdings for optimization.')
+                st.error(f'Select at least 2 holdings for optimization. Error: {str(e)}')
             except Exception as e:
-                st.error('Optimization error: Please check your selections and try again.')
+                st.error(f'Optimization error: {str(e)}. Please check that you have selected valid holdings with sufficient historical data.')
 
         elif selected == "Allocations":
             st.subheader("Allocations", anchor=False)
@@ -431,9 +452,9 @@ def main():
                 else:
                     st.write("Holdings information not available.")
             except (ValueError, IndexError, KeyError) as e:
-                st.error('Select at least one holding to view allocations.')
+                st.error(f'Select at least one holding to view allocations. Error: {str(e)}')
             except Exception as e:
-                st.error('Error loading allocation data. Please check your selections.')
+                st.error(f'Error loading allocation data: {str(e)}. Ensure your holdings have sector and geographic data available.')
 
         elif selected == "Portfolio Report":
             benchmark_col, empty_col, preset_col = st.columns([2, 1.5, 3])
@@ -479,7 +500,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-

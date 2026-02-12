@@ -32,6 +32,9 @@ venv.bak/
 
 # Streamlit
 .streamlit/secrets.toml
+.streamlit/*.tml
+!.streamlit/config.toml
+!.streamlit/secrets.toml.example
 
 # IDE
 .vscode/
@@ -51,5 +54,8 @@ Thumbs.db
 
 # Project specific
 portfolio_report.pdf
-/files/
+files/portfolios.json
 *.log
+
+# Keep files directory structure but ignore content
+!files/.gitkeep

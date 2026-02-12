@@ -1,9 +1,9 @@
 # Core framework
-streamlit
+streamlit==1.26.0
 
 # Data processing
 pandas==2.2.1
-numpy
+numpy==1.26.4
 
 # Financial data and optimization
 yfinance==0.2.37

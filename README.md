@@ -1,10 +1,17 @@
 # Investment Portfolio Manager
 
+[![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.26.0-FF4B4B.svg)](https://streamlit.io)
+[![Portfolio Optimization](https://img.shields.io/badge/PyPortfolioOpt-1.5.6-green.svg)](https://pyportfolioopt.readthedocs.io/)
+
 A sophisticated web application for investment portfolio analysis, optimization, and reporting built with Streamlit. This tool provides comprehensive portfolio analytics including risk assessment, performance tracking, and professional PDF reporting capabilities.
 
-## Live Demo
+## 📊 Live Demo
 
-[🚀 View Live Application](your-streamlit-deployment-url-here)
+> **Note:** Deploy to Streamlit Cloud and add your live URL here
+>
+> Instructions: Push to GitHub → Visit [share.streamlit.io](https://share.streamlit.io) → Connect repository
 
 ## Features
 
@@ -40,7 +47,7 @@ A sophisticated web application for investment portfolio analysis, optimization,
 
 ### Core Framework
 - **Frontend**: Streamlit 1.26.0
-- **Data Processing**: Pandas 2.2.1, NumPy 1.23.5
+- **Data Processing**: Pandas 2.2.1, NumPy
 
 ### Financial Analytics
 - **Optimization**: PyPortfolioOpt 1.5.5 (Mean-Variance, HRP, CLA)
@@ -66,8 +73,8 @@ A sophisticated web application for investment portfolio analysis, optimization,
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/investment-portfolio-manager.git
-cd investment-portfolio-manager
+git clone https://github.com/gohibiki/xray.git
+cd xray
 ```
 
 2. Create a virtual environment:
@@ -82,10 +89,12 @@ pip install -r requirements.txt
 ```
 
 4. Configure API credentials:
-Create `.streamlit/secrets.toml`:
-```toml
-[api_keys]
-financial_modeling_prep = "your_api_key_here"
+```bash
+# Copy the example secrets file
+cp .streamlit/secrets.toml.example .streamlit/secrets.toml
+
+# Edit secrets.toml and add your API keys
+# Get free API key at: https://financialmodelingprep.com/
 ```
 
 5. Run the application:
@@ -153,22 +162,32 @@ streamlit run app.py
 - Financial Modeling Prep: 250 requests/day (free tier)
 - Application implements 24-hour caching to minimize API calls
 
-## Project Structure
+## 📁 Project Structure
 
 ```
-investment-portfolio-manager/
-├── app.py                 # Main Streamlit application
-├── additional_info.py     # Security data fetching and processing
-├── holdings.py           # Portfolio holdings aggregation
-├── layout.py             # Custom CSS styling
-├── metrics.py            # Performance calculations
-├── optimizations.py      # Portfolio optimization algorithms
-├── search.py             # Security search functionality
-├── xray.py               # PDF report generation
-├── requirements.txt      # Python dependencies
+xray/
+├── app.py                      # Main Streamlit application
+├── additional_info.py          # Security data fetching and processing
+├── holdings.py                 # Portfolio holdings aggregation
+├── layout.py                   # Custom CSS styling
+├── metrics.py                  # Performance calculations
+├── optimizations.py            # Portfolio optimization algorithms
+├── search.py                   # Security search functionality
+├── xray.py                     # PDF report generation
+├── requirements.txt            # Python dependencies
+├── KMLM.csv                    # Historical data for KMLM ETF
+├── GothamLight.ttf             # Font for PDF generation
+├── OpenSans-VariableFont_*.ttf # Font for PDF generation
 ├── .streamlit/
-│   └── secrets.toml      # API configuration (not in repo)
-└── .gitignore           # Git ignore rules
+│   ├── config.toml             # Streamlit configuration
+│   ├── secrets.toml            # API keys (not in repo - create from example)
+│   └── secrets.toml.example    # Template for API configuration
+├── .github/
+│   ├── ISSUE_TEMPLATE.md       # GitHub issue template
+│   └── PULL_REQUEST_TEMPLATE.md # GitHub PR template
+├── files/
+│   └── portfolios.json         # Saved portfolios (auto-generated)
+└── .gitignore                  # Git ignore rules
 ```
 
 ## Configuration
@@ -219,29 +238,36 @@ streamlit run app.py --server.port 8502
 streamlit run app.py --logger.level debug
 ```
 
-## Contributing
+## 🎯 Key Highlights
+
+This project demonstrates:
+- **Financial Engineering**: Implementation of Modern Portfolio Theory, multiple optimization algorithms (HRP, CLA, Mean-Variance), and risk models (Ledoit-Wolf shrinkage)
+- **Data Engineering**: Real-time data integration from multiple sources, caching strategies, and data quality validation
+- **Full-Stack Development**: Interactive web application with professional UI/UX
+- **PDF Generation**: Custom report generation with professional formatting
+- **API Integration**: Working with financial data APIs and web scraping
+- **Python Best Practices**: Modular code architecture, error handling, cross-platform compatibility
+
+## 📝 Technical Skills Demonstrated
+
+- **Languages**: Python
+- **Libraries**: Pandas, NumPy, SciPy, Scikit-learn, PyPortfolioOpt
+- **Web Frameworks**: Streamlit
+- **Data Visualization**: Matplotlib, Streamlit charts
+- **APIs**: REST APIs (Financial Modeling Prep, Investing.com via InvestGo)
+- **Data Processing**: Time series analysis, statistical modeling, outlier detection
+- **Report Generation**: ReportLab for PDF creation
+- **Version Control**: Git, GitHub
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-### Development Setup
-
-```bash
-# Install development dependencies
-pip install -r requirements.txt
-
-# Run tests (if implemented)
-python -m pytest tests/
-
-# Format code
-black *.py
-
-# Lint code
-flake8 *.py
-```
 
 ## Disclaimer
 
@@ -253,11 +279,12 @@ This application is for educational and informational purposes only. It should n
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Contact
+## 📧 Contact
 
-**Author**: [gohibiki]  
-**Email**: [gohibiki@protonmail.com]
-**GitHub**: [[gohibiki](https://github.com/gohibiki)]
+**Author**: gohibiki
+**Email**: gohibiki@protonmail.com
+**GitHub**: [github.com/gohibiki](https://github.com/gohibiki)
+**LinkedIn**: [Add your LinkedIn profile here]
 
 ## Acknowledgments
 
