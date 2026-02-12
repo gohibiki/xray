@@ -54,8 +54,4 @@ Thumbs.db
 
 # Project specific
 portfolio_report.pdf
-files/portfolios.json
 *.log
-
-# Keep files directory structure but ignore content
-!files/.gitkeep

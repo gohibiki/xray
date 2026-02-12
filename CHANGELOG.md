@@ -9,7 +9,6 @@ All notable changes to the Investment Portfolio Manager project are documented i
 - Portfolio analysis with historical performance tracking
 - 8 portfolio optimization strategies (Min Vol, Max Sharpe, HRP, CLA, etc.)
 - Professional PDF report generation with customizable investment strategies
-- Portfolio save/load functionality with JSON persistence
 - Real-time data integration with Investing.com and Financial Modeling Prep APIs
 - Dividend-adjusted returns calculation
 - Sector, geographic, and asset class allocation analysis
@@ -18,7 +17,6 @@ All notable changes to the Investment Portfolio Manager project are documented i
 - Synthetic Risk Indicator (SRI) calculation and override
 - Interactive search with auto-complete for securities
 - Support for up to 10 holdings per portfolio
-- Multiple portfolio management
 - Cross-platform file path handling
 - Comprehensive error messages and validation
 
@@ -26,7 +24,6 @@ All notable changes to the Investment Portfolio Manager project are documented i
 - Added comprehensive README with installation instructions
 - Created CONTRIBUTING.md with development guidelines
 - Added KMLM_DATA_FORMAT.md for CSV data structure
-- Added PORTFOLIO_FORMAT.md for JSON portfolio structure
 - Created GitHub issue and PR templates
 - Added .streamlit/secrets.toml.example for API configuration
 

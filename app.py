@@ -14,7 +14,6 @@ from datetime import datetime, timedelta
 import yfinance as yf
 from streamlit_pdf_viewer import pdf_viewer
 from streamlit_option_menu import option_menu
-import json
 import os
 import requests
 
@@ -326,51 +325,12 @@ def generate_xray_report(selected_isins, investment_strategy, weight_list, sri_v
         st.download_button(label="Download X-Ray PDF", data=open(pdf_path, "rb"), file_name="portfolio_report.pdf")
         pdf_viewer(pdf_path)
 
-# Functions to save and load portfolios
-def save_portfolio_to_file(portfolios, filename=None):
-    if filename is None:
-        # Use cross-platform path in project files directory
-        base_dir = os.path.dirname(__file__)
-        files_dir = os.path.join(base_dir, "files")
-        os.makedirs(files_dir, exist_ok=True)
-        filename = os.path.join(files_dir, "portfolios.json")
-
-    with open(filename, "w") as file:
-        json.dump(portfolios, file, indent=2)
-
-def load_portfolios_from_file(filename=None):
-    if filename is None:
-        # Use cross-platform path in project files directory
-        base_dir = os.path.dirname(__file__)
-        filename = os.path.join(base_dir, "files", "portfolios.json")
-
-    if os.path.exists(filename):
-        with open(filename, "r") as file:
-            return json.load(file)
-    return {}
-
 def main():
-    # Load portfolios from file
-    if "portfolios" not in st.session_state:
-        st.session_state.portfolios = load_portfolios_from_file()
-
     selected = set_page_config()
 
     isin_col, main_col = st.columns([1, 5])
 
     with isin_col:
-        # Create a scrolling menu for loading portfolios with a "None" option
-        portfolio_options = ["No Portfolio Selected"] + list(st.session_state.portfolios.keys())
-        saved_portfolio_name = st.selectbox(
-            "Load Portfolio", 
-            options=portfolio_options,
-            key="loaded_portfolio_name",
-            label_visibility="collapsed",
-        )
-        if saved_portfolio_name != "No Portfolio Selected":
-            st.session_state.selected_isins = st.session_state.portfolios[saved_portfolio_name]["isins"]
-            st.session_state.weight_list = st.session_state.portfolios[saved_portfolio_name]["weights"]
-
         isin_list, weight_list = [], []
         for i in range(10):
             col1, col2 = st.columns([4, 1])
@@ -387,42 +347,11 @@ def main():
                     st.session_state[weight_key] = ""
                 weight = st.text_input(f"weight_{i}", key=weight_key, label_visibility="collapsed")
                 weight_list.append(weight)
-        
-        # If "None" is selected, only use ISINs from the input list
-        if saved_portfolio_name == "No Portfolio Selected":
-            selected_isins = process_isins(isin_list)
-            st.session_state.selected_isins = selected_isins
-            st.session_state.weight_list = weight_list
 
-        col1, col2, col3 = st.columns([2.5, 1, 1])
-
-        with col1:
-            portfolio_name = st.text_input("Portfolio Name", key="portfolio_name", label_visibility="collapsed")
-
-        with col2:
-            # Save the current ISINs and weights as a portfolio
-            if st.button("💾"):
-                if portfolio_name:
-                    selected_isins = process_isins(isin_list)  # Process the current ISINs
-                    st.session_state.reset_portfolio = True  # Set the reset flag
-                    st.session_state.portfolios[portfolio_name] = {
-                        "isins": selected_isins,
-                        "weights": weight_list
-                    }
-                    save_portfolio_to_file(st.session_state.portfolios)  # Save to file
-                    st.rerun()
-                    
-                else:
-                    main_col.error("Please enter a name for the portfolio.")
-
-        with col3:
-            # Delete the selected portfolio
-            if st.button("☠️"):
-                if portfolio_name in st.session_state.portfolios:
-                    del st.session_state.portfolios[portfolio_name]
-                    save_portfolio_to_file(st.session_state.portfolios)  # Update the file after deletion
-                    isin_col.success(f"Portfolio '{portfolio_name}' deleted!")
-                    st.rerun()  # Refresh the page
+        # Process ISINs and store in session state
+        selected_isins = process_isins(isin_list)
+        st.session_state.selected_isins = selected_isins
+        st.session_state.weight_list = weight_list
 
     with main_col:
         # Content for each section

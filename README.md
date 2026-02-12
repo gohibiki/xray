@@ -38,7 +38,6 @@ A sophisticated web application for investment portfolio analysis, optimization,
 - **Investment Strategy Documentation**: Built-in templates (Defensive, Balanced, Aggressive) or custom strategies
 
 ### Data Management
-- **Portfolio Persistence**: Save and load multiple portfolio configurations
 - **Real-time Data**: Integration with Investing.com and Financial Modeling Prep APIs
 - **Interactive Search**: Auto-complete search for thousands of ETFs, funds, and securities
 - **Data Validation**: Comprehensive input validation and error handling
@@ -123,11 +122,6 @@ streamlit run app.py
    - Leave blank for equal weighting
    - Validation ensures proper weight allocation
 
-3. **Save Portfolio**:
-   - Enter a portfolio name
-   - Click the save button (💾)
-   - Access saved portfolios via dropdown
-
 ### Analysis Features
 
 **Historical Prices Tab**:
@@ -185,8 +179,6 @@ xray/
 ├── .github/
 │   ├── ISSUE_TEMPLATE.md       # GitHub issue template
 │   └── PULL_REQUEST_TEMPLATE.md # GitHub PR template
-├── files/
-│   └── portfolios.json         # Saved portfolios (auto-generated)
 └── .gitignore                  # Git ignore rules
 ```
 
@@ -208,7 +200,6 @@ xray/
 ### Caching Strategy
 - **24-hour TTL**: Price data, dividend data, security metadata
 - **Session-based**: Search results, portfolio calculations
-- **Persistent**: Saved portfolio configurations
 
 ### Data Processing
 - **Parallel Processing**: Multi-threaded API requests where applicable
