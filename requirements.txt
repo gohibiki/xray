@@ -1,0 +1,29 @@
+# Core framework
+streamlit
+
+# Data processing
+pandas==2.2.1
+numpy
+
+# Financial data and optimization
+yfinance==0.2.37
+pyportfolioopt==1.5.6
+investgo==1.0.2
+
+# Web scraping
+cloudscraper
+beautifulsoup4==4.12.3
+
+# UI components
+streamlit-searchbox
+streamlit-pdf-viewer==0.0.16
+streamlit-option-menu
+
+# Visualization and reporting
+matplotlib
+reportlab==4.2.0
+
+# Utilities
+scikit-learn
+lxml
+requests
