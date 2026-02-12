@@ -381,11 +381,21 @@ def main():
                 combined_sectors, combined_holdings = process_and_combine_holdings(st.session_state.get('selected_isins', []), st.session_state.get('weight_list', []))
                 if combined_sectors is not None and combined_holdings is not None:
                     col1, col2, col3 = st.columns([1, 1, 1])
-                    col1.markdown(combined_sectors.to_html(index=False, header=False), unsafe_allow_html=True)
-                    col2.markdown(combined_holdings[1].to_html(index=False, header=False), unsafe_allow_html=True)
-                    col2.markdown("<br><br>", unsafe_allow_html=True)
-                    col2.markdown(combined_holdings[3].to_html(index=False, header=False), unsafe_allow_html=True)
-                    col3.markdown(combined_holdings[0].to_html(index=False, header=False), unsafe_allow_html=True)
+
+                    with col1:
+                        st.subheader("Sector Allocation", anchor=False)
+                        st.markdown(combined_sectors.to_html(index=False, header=False), unsafe_allow_html=True)
+
+                    with col2:
+                        st.subheader("Asset Allocation", anchor=False)
+                        st.markdown(combined_holdings[1].to_html(index=False, header=False), unsafe_allow_html=True)
+                        st.markdown("<br>", unsafe_allow_html=True)
+                        st.subheader("Country Exposure", anchor=False)
+                        st.markdown(combined_holdings[3].to_html(index=False, header=False), unsafe_allow_html=True)
+
+                    with col3:
+                        st.subheader("Top Holdings", anchor=False)
+                        st.markdown(combined_holdings[0].to_html(index=False, header=False), unsafe_allow_html=True)
                 else:
                     st.write("Holdings information not available.")
             except (ValueError, IndexError, KeyError) as e:
