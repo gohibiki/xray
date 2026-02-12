@@ -204,15 +204,20 @@ def optimize_and_display(selected_isins, weight_list):
 
     returns = df_stocks.pct_change()
     metrics_df = calculate_metrics(df_stocks, returns, weights_df)
+
+    st.subheader("Portfolio Weights (%)", anchor=False)
     st.dataframe((weights_df * 100).style.format("{:.2f}"), use_container_width=True)
+
+    st.subheader("Performance Metrics", anchor=False)
     st.dataframe(metrics_df.T, use_container_width=True)
 
+    st.subheader("Cumulative Returns Comparison", anchor=False)
     plot_optimize = pd.concat(
         [(1 + returns.dot(weights_df[col])).cumprod() for col in weights_df.columns],
         axis=1
     )
     plot_optimize.columns = weights_df.columns
-    st.line_chart(plot_optimize.resample('W').mean(), height=650)
+    st.line_chart(plot_optimize.resample('W').last(), height=650)
 
 
 # Generate X-Ray report
@@ -364,6 +369,9 @@ def main():
                 optimize_and_display(st.session_state.get('selected_isins', []), st.session_state.get('weight_list', []))
             except (ValueError, IndexError, KeyError) as e:
                 st.error(f'Select at least 2 holdings for optimization. Error: {str(e)}')
+            except ImportError:
+                # Handle missing pypfopt dependency
+                st.error('PyPortfolioOpt library not found. Please install: pip install pyportfolioopt')
             except Exception as e:
                 st.error(f'Optimization error: {str(e)}. Please check that you have selected valid holdings with sufficient historical data.')
 
