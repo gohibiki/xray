@@ -38,9 +38,10 @@ A sophisticated web application for investment portfolio analysis, optimization,
 - **Investment Strategy Documentation**: Built-in templates (Defensive, Balanced, Aggressive) or custom strategies
 
 ### Data Management
-- **Real-time Data**: Integration with Investing.com and Financial Modeling Prep APIs
+- **Real-time Data**: Integration with Investing.com (via InvestGo) and Yahoo Finance (via yfinance)
 - **Interactive Search**: Auto-complete search for thousands of ETFs, funds, and securities
 - **Data Validation**: Comprehensive input validation and error handling
+- **No API Keys Required**: Uses free data sources
 
 ## Technology Stack
 
@@ -49,8 +50,8 @@ A sophisticated web application for investment portfolio analysis, optimization,
 - **Data Processing**: Pandas 2.2.1, NumPy
 
 ### Financial Analytics
-- **Optimization**: PyPortfolioOpt 1.5.5 (Mean-Variance, HRP, CLA)
-- **Data Sources**: InvestGo 1.0.2, Financial Modeling Prep API
+- **Optimization**: PyPortfolioOpt 1.5.6 (Mean-Variance, HRP, CLA)
+- **Data Sources**: InvestGo 1.0.2 (Investing.com), yfinance 0.2.37 (Yahoo Finance)
 - **Risk Models**: Scikit-learn for statistical computations
 
 ### Visualization & Reporting
@@ -66,7 +67,6 @@ A sophisticated web application for investment portfolio analysis, optimization,
 
 ### Prerequisites
 - Python 3.8+
-- Financial Modeling Prep API key (free tier available)
 
 ### Installation
 
@@ -87,26 +87,12 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Configure API credentials:
-```bash
-# Copy the example secrets file
-cp .streamlit/secrets.toml.example .streamlit/secrets.toml
-
-# Edit secrets.toml and add your API keys
-# Get free API key at: https://financialmodelingprep.com/
-```
-
-5. Run the application:
+4. Run the application:
 ```bash
 streamlit run app.py
 ```
 
-### Getting API Keys
-
-**Financial Modeling Prep** (Required for dividend data):
-1. Visit [financialmodelingprep.com](https://financialmodelingprep.com/)
-2. Sign up for free account (250 requests/day)
-3. Copy your API key to `.streamlit/secrets.toml`
+The application will automatically open in your default browser at `http://localhost:8501`
 
 ## Usage Guide
 
@@ -146,15 +132,15 @@ streamlit run app.py
 - Override risk indicators
 - Select benchmark comparisons
 
-## API Dependencies
+## Data Sources
 
-### Required APIs
-- **Financial Modeling Prep**: Dividend data retrieval
-- **Investing.com**: Price data and search functionality (via InvestGo)
+### Free Data APIs (No API Keys Required)
+- **Investing.com** (via InvestGo): Price data, search functionality, security metadata
+- **Yahoo Finance** (via yfinance): Dividend data, historical prices
 
-### Rate Limits
-- Financial Modeling Prep: 250 requests/day (free tier)
-- Application implements 24-hour caching to minimize API calls
+### Caching
+- Application implements 24-hour caching to minimize API calls and improve performance
+- All data sources are completely free with no rate limits or authentication required
 
 ## 📁 Project Structure
 
@@ -173,9 +159,7 @@ xray/
 ├── GothamLight.ttf             # Font for PDF generation
 ├── OpenSans-VariableFont_*.ttf # Font for PDF generation
 ├── .streamlit/
-│   ├── config.toml             # Streamlit configuration
-│   ├── secrets.toml            # API keys (not in repo - create from example)
-│   └── secrets.toml.example    # Template for API configuration
+│   └── config.toml             # Streamlit configuration
 ├── .github/
 │   ├── ISSUE_TEMPLATE.md       # GitHub issue template
 │   └── PULL_REQUEST_TEMPLATE.md # GitHub PR template
@@ -213,11 +197,7 @@ xray/
 1. Push your code to GitHub
 2. Visit [share.streamlit.io](https://share.streamlit.io)
 3. Connect your GitHub repository
-4. Add secrets in the Streamlit Cloud dashboard:
-   ```toml
-   [api_keys]
-   financial_modeling_prep = "your_api_key_here"
-   ```
+4. Deploy (no secrets or API keys required!)
 
 ### Local Development
 
@@ -245,7 +225,7 @@ This project demonstrates:
 - **Libraries**: Pandas, NumPy, SciPy, Scikit-learn, PyPortfolioOpt
 - **Web Frameworks**: Streamlit
 - **Data Visualization**: Matplotlib, Streamlit charts
-- **APIs**: REST APIs (Financial Modeling Prep, Investing.com via InvestGo)
+- **APIs**: REST APIs (Investing.com via InvestGo, Yahoo Finance via yfinance)
 - **Data Processing**: Time series analysis, statistical modeling, outlier detection
 - **Report Generation**: ReportLab for PDF creation
 - **Version Control**: Git, GitHub
@@ -281,8 +261,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **PyPortfolioOpt** for optimization algorithms
 - **Streamlit** for the web framework
-- **Financial Modeling Prep** for market data
-- **Investing.com** for comprehensive financial data
+- **Investing.com** for comprehensive financial data (via InvestGo)
+- **Yahoo Finance** for dividend and price data (via yfinance)
 
 ---
 

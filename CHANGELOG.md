@@ -9,7 +9,7 @@ All notable changes to the Investment Portfolio Manager project are documented i
 - Portfolio analysis with historical performance tracking
 - 8 portfolio optimization strategies (Min Vol, Max Sharpe, HRP, CLA, etc.)
 - Professional PDF report generation with customizable investment strategies
-- Real-time data integration with Investing.com and Financial Modeling Prep APIs
+- Real-time data integration with Investing.com (InvestGo) and Yahoo Finance (yfinance)
 - Dividend-adjusted returns calculation
 - Sector, geographic, and asset class allocation analysis
 - Correlation analysis with Spearman method
@@ -25,7 +25,6 @@ All notable changes to the Investment Portfolio Manager project are documented i
 - Created CONTRIBUTING.md with development guidelines
 - Added KMLM_DATA_FORMAT.md for CSV data structure
 - Created GitHub issue and PR templates
-- Added .streamlit/secrets.toml.example for API configuration
 
 ### Technical Features
 - Streamlit 1.26.0 web framework
@@ -39,8 +38,8 @@ All notable changes to the Investment Portfolio Manager project are documented i
 ### Known Limitations
 - Maximum 10 holdings per portfolio
 - 5-year historical lookback period
-- Requires Financial Modeling Prep API key for dividend data
 - PDF generation requires font files in project root
+- Data dependent on Investing.com and Yahoo Finance availability
 
 ## Future Enhancements
 
